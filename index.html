@@ -10,9 +10,206 @@
 </head>
 <body>
     <div class="app-container">
-        <h1>Task Timer</h1>
-        <p>Welcome to Task Timer! The app is being set up...</p>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-clock"></i> Task Timer</h2>
+                <button id="darkModeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="sidebar-content">
+                <div class="stats-panel">
+                    <h3>Statistics</h3>
+                    <div class="stat-item">
+                        <i class="fas fa-tasks"></i>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Tasks</span>
+                            <span class="stat-value" id="totalTasks">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-play-circle"></i>
+                        <div class="stat-info">
+                            <span class="stat-label">Active Tasks</span>
+                            <span class="stat-value" id="activeTasks">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-hourglass-half"></i>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Time</span>
+                            <span class="stat-value" id="totalTime">00:00:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auth-section">
+                    <h3>Account</h3>
+                    <div id="loginButtons" class="login-buttons">
+                        <button class="login-btn google-login">
+                            <i class="fab fa-google"></i> Sign in with Google
+                        </button>
+                        <button class="login-btn x-login">
+                            <i class="fab fa-x-twitter"></i> Sign in with X
+                        </button>
+                    </div>
+                    <div id="userProfile" class="user-profile" style="display: none;">
+                        <img id="userAvatar" src="" alt="User avatar">
+                        <span id="userName"></span>
+                        <button id="logoutBtn" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header Section with Running Tasks -->
+            <div class="header-section">
+                <div class="content-header">
+                    <h1>Task Management</h1>
+                </div>
+                <div class="running-tasks-bar">
+                    <h3>Running Tasks</h3>
+                    <div class="running-tasks-list" id="runningTasksList">
+                        <!-- Running tasks will be added here dynamically -->
+                        <div class="no-running-tasks">
+                            <i class="fas fa-coffee"></i>
+                            <span>No active tasks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Section: Task Form and Category Distribution -->
+            <div class="top-section">
+                <!-- Task Form -->
+                <div class="task-form-container">
+                    <h3>Add New Task</h3>
+                    <form id="taskForm" class="task-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="taskCategory">Category</label>
+                                <select id="taskCategory" class="task-category">
+                                    <option value="">Select a category (optional)</option>
+                                    <option value="study">Study</option>
+                                    <option value="work">Work</option>
+                                    <option value="reading">Reading</option>
+                                    <option value="gaming">Gaming</option>
+                                    <option value="podcast">Podcast</option>
+                                    <option value="video">Video Content</option>
+                                    <option value="coding">Coding</option>
+                                    <option value="exercise">Exercise</option>
+                                    <option value="meditation">Meditation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskName">Task Name</label>
+                                <input type="text" id="taskName" placeholder="Enter task name (optional if category selected)">
+                            </div>
+                            <div class="form-group description-group">
+                                <label for="taskDescription">Description</label>
+                                <textarea id="taskDescription" placeholder="Enter task description"></textarea>
+                            </div>
+                            <div class="form-group button-group">
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-plus"></i> Add Task
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Category Distribution Chart -->
+                <div class="chart-card category-chart">
+                    <h3>Time Distribution by Category</h3>
+                    <canvas id="categoryPieChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Daily Activity and Current Tasks -->
+            <div class="bottom-section">
+                <!-- Daily Activity Chart -->
+                <div class="chart-card daily-chart">
+                    <h3>Daily Activity</h3>
+                    <canvas id="dailyBarChart"></canvas>
+                </div>
+
+                <!-- Task List -->
+                <div class="tasks-container">
+                    <h2>Current Tasks</h2>
+                    <div class="task-list" id="taskList">
+                        <!-- Tasks will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-consent">
+        <div class="cookie-content">
+            <h3>Cookie Settings</h3>
+            <p>We use cookies to enhance your experience and save your task progress. Please choose your preferences below.</p>
+            <div class="cookie-buttons">
+                <button class="cookie-btn accept">Accept All</button>
+                <button class="cookie-btn essential">Essential Only</button>
+                <button class="cookie-btn settings">Cookie Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Settings Modal -->
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cookie Preferences</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="cookie-option">
+                    <div class="option-header">
+                        <label for="essential">Essential Cookies</label>
+                        <div class="switch">
+                            <input type="checkbox" id="essential" checked disabled>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <p>Required for basic functionality. Cannot be disabled.</p>
+                </div>
+                <div class="cookie-option">
+                    <div class="option-header">
+                        <label for="taskStorage">Task Storage</label>
+                        <div class="switch">
+                            <input type="checkbox" id="taskStorage">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <p>Allows saving your tasks and progress in the browser.</p>
+                </div>
+                <div class="cookie-option">
+                    <div class="option-header">
+                        <label for="fileStorage">File Storage</label>
+                        <div class="switch">
+                            <input type="checkbox" id="fileStorage">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <p>Enables importing and exporting tasks as files.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cookie-btn accept">Save Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Storage Status -->
+    <div class="storage-status"></div>
+
     <script src="app.js"></script>
 </body>
-</html>
+</html> 
